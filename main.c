@@ -19,7 +19,7 @@ typedef enum
 } KeyType;
 
 typedef struct
-{
+{
 	KeyType type;
 	void *key;
 	void *value;
@@ -40,24 +40,15 @@ void resize()
 {
 	UNEMPLEMENTED;
 }
-void create (int size)
+HashTable *create (int size)
 {
-	// allocate memory of an empty array of a size 'siz'
-	void *ptr = (HashTable*) malloc(size * sizeof(HashTable));
-	if (ptr == NULL)
-	{
-		printf("Memory is not allocated");
-		exit(0);
-	}
-	else
-	{
-		printf("The creating of the hashtable is completed");
-	}
-	
+	HashTable *ptr = (HashTable*) malloc(size * sizeof(HashTable));
+	assert(ptr != NULL);
+	return ptr;
 }
 void insert()
 {
-	UNEMPLEMENTED;
+	
 }
 
 void search()
@@ -80,6 +71,5 @@ void free_table ()
 int main()
 {
 	int size = 10;
-	create(size);
-	printf("hello");
+	HashTable *hashtable = create(size);
 }

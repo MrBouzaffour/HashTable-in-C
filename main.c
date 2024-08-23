@@ -3,18 +3,40 @@
 #include <stdbool.h>
 #include <assert.h>
 
-
 #define UNEMPLEMENTED \
 	do {	\
 		fprintf(stderr,"%s:%d: TODO: %s is not implemented yet.\n",\
 				__FILE__,__LINE__,__func__);\
 		abort();\
 	}while(0)
-void hash()
-/*
+
+
+typedef enum
+{
+	INT,
+	STR
+} KeyType;
+
+typedef struct
+{
+	KeyType type;
+	void *key;
+	void *value;
+}HachEntry;
+
+typedef struct
+{
+	int size;
+
+}
+
+
+HashTable hash()
+ /*
  * Compute an index in the hash table array from a given key
- * 	@params :  
- * */
+ * 	@params : 
+ * 	@returns :  
+ */
 {
 	UNEMPLEMENTED;
 }

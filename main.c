@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <assert.h>
 
+
 #define UNEMPLEMENTED \
 	do {	\
 		fprintf(stderr,"%s:%d: TODO: %s is not implemented yet.\n",\
@@ -22,21 +23,16 @@ typedef struct
 	KeyType type;
 	void *key;
 	void *value;
-}HachEntry;
+}Enteries;
 
 typedef struct
 {
 	int size;
+	Enteries buckets;
+}HashTable;
 
-}
 
-
-HashTable hash()
- /*
- * Compute an index in the hash table array from a given key
- * 	@params : 
- * 	@returns :  
- */
+void hash()
 {
 	UNEMPLEMENTED;
 }
@@ -44,9 +40,20 @@ void resize()
 {
 	UNEMPLEMENTED;
 }
-void create ()
+void create (int size)
 {
-	UNEMPLEMENTED;
+	// allocate memory of an empty array of a size 'siz'
+	void *ptr = (HashTable*) malloc(size * sizeof(HashTable));
+	if (ptr == NULL)
+	{
+		printf("Memory is not allocated");
+		exit(0);
+	}
+	else
+	{
+		printf("The creating of the hashtable is completed");
+	}
+	
 }
 void insert()
 {
@@ -72,5 +79,7 @@ void free_table ()
 
 int main()
 {
+	int size = 10;
+	create(size);
 	printf("hello");
 }

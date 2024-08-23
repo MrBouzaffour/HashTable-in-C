@@ -32,7 +32,7 @@ typedef struct
 typedef struct
 {
 	int size;
-	Enteries buckets;
+	Enteries *buckets;
 }HashTable;
 
 
@@ -50,6 +50,9 @@ HashTable *create (int size)
 	assert(ptr != NULL);
 
 
+	ptr->size = size;
+	ptr->buckets = (Enteries*) malloc(size * sizeof(Enteries));
+	assert(ptr->buckets != NULL);
 
 	return ptr;
 }

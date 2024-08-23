@@ -3,6 +3,10 @@
 #include <stdbool.h>
 #include <assert.h>
 
+#define CHECK_TYPE(var) _Generic((var), \
+    int: INT, \
+    char*: STR, \
+    default: -1)
 
 #define UNEMPLEMENTED \
 	do {	\
@@ -19,7 +23,7 @@ typedef enum
 } KeyType;
 
 typedef struct
-{
+{
 	KeyType type;
 	void *key;
 	void *value;
@@ -44,6 +48,9 @@ HashTable *create (int size)
 {
 	HashTable *ptr = (HashTable*) malloc(size * sizeof(HashTable));
 	assert(ptr != NULL);
+
+
+
 	return ptr;
 }
 void insert()

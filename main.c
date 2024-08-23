@@ -11,6 +11,10 @@
 		abort();\
 	}while(0)
 void hash()
+/*
+ * Compute an index in the hash table array from a given key
+ * 	@params :  
+ * */
 {
 	UNEMPLEMENTED;
 }

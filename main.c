@@ -36,9 +36,14 @@ typedef struct
 	Enteries *buckets;
 }HashTable;
 
-void hash()
+unsigned int hash_INT(int key, int size)
 {
 	UNEMPLEMENTED;
+}
+unsigned int hashString(char *key, int size)
+{
+	UNEMPLEMENTED;
+
 }
 void resize()
 {
@@ -86,9 +91,10 @@ void delete ()
 	UNEMPLEMENTED;
 }
 
-void free_table ()
+void free_table (HashTable *table)
 {
-	UNEMPLEMENTED;
+	free(table->buckets);
+	free(table);
 }
 
 void printTable(HashTable *table)
@@ -113,15 +119,18 @@ void printTable(HashTable *table)
 
 int main()
 {
-	    int size = 10;
-    HashTable *hashtable = create(size);
-
-    int intKey = 2;
-    char *strKey = "hello";
-    char *value = "world";
-
-    insert(hashtable, &intKey, value);
-    insert(hashtable, strKey, value);
-
-    printTable(hashtable);
+	int size = 10;
+	HashTable *hashtable = create(size);
+	
+	int intKey = 2;
+	char *strKey = "hello";
+	char *value = "world";
+	
+	insert(hashtable, &intKey, value);
+	insert(hashtable, strKey, value);
+	
+	printTable(hashtable);
+	free_table(hashtable);
+	
+	return 0;
 }

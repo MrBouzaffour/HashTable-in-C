@@ -2,14 +2,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <string.h>
 
-<<<<<<< HEAD
-=======
 #define CHECK_TYPE(var) _Generic((var), \
     int: INT, \
     char*: STR, \
     default: -1)
->>>>>>> dev
 
 #define UNEMPLEMENTED \
 	do {	\
@@ -17,8 +15,6 @@
 				__FILE__,__LINE__,__func__);\
 		abort();\
 	}while(0)
-<<<<<<< HEAD
-=======
 
 
 typedef enum
@@ -40,8 +36,6 @@ typedef struct
 	Enteries *buckets;
 }HashTable;
 
-
->>>>>>> dev
 void hash()
 {
 	UNEMPLEMENTED;
@@ -50,15 +44,6 @@ void resize()
 {
 	UNEMPLEMENTED;
 }
-<<<<<<< HEAD
-void create ()
-{
-	UNEMPLEMENTED;
-}
-void insert()
-{
-	UNEMPLEMENTED;
-=======
 HashTable *create (int size)
 {
 	HashTable *ptr = (HashTable*) malloc(size * sizeof(HashTable));
@@ -71,10 +56,24 @@ HashTable *create (int size)
 
 	return ptr;
 }
-void insert()
+void insert(HashTable *table, void *key, void *value)
 {
+	KeyType keyType = CHECK_TYPE(*(int*)key);
+	int index;
 	
->>>>>>> dev
+	if (keyType == INT) {
+		index = *(int *)key;
+	} 
+	
+	else if (keyType == STR) {
+		index = strlen((char*)key);
+	}
+	Enteries entry;
+	entry.type = keyType;
+	entry.key = key;
+	entry.value = value;
+
+	table->buckets[index] = entry;
 }
 
 void search()
@@ -92,14 +91,37 @@ void free_table ()
 	UNEMPLEMENTED;
 }
 
+void printTable(HashTable *table)
+{
+	for (int i = 0; i < table->size; i++) {
+		if (table->buckets[i].key != NULL) {
+			printf("Entry %d: ", i);
+			switch (table->buckets[i].type) {
+				case INT:
+					printf("Key (int) = %d, Value = %s\n", *(int*)table->buckets[i].key, (char*)table->buckets[i].value);
+					break;
+				case STR:
+					printf("Key (str) = %s, Value = %s\n", (char*)table->buckets[i].key, (char*)table->buckets[i].value);
+					break;
+				default:
+					printf("Unknown key type.\n");
+			}
+		}
+	}
+}
 
 
 int main()
 {
-<<<<<<< HEAD
-	printf("hello");
-=======
-	int size = 10;
-	HashTable *hashtable = create(size);
->>>>>>> dev
+	    int size = 10;
+    HashTable *hashtable = create(size);
+
+    int intKey = 2;
+    char *strKey = "hello";
+    char *value = "world";
+
+    insert(hashtable, &intKey, value);
+    insert(hashtable, strKey, value);
+
+    printTable(hashtable);
 }

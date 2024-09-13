@@ -119,6 +119,7 @@ void printTable(HashTable *table)
 
 int main()
 {
+	printf("Program started");
 	int size = 10;
 	HashTable *hashtable = create(size);
 	

@@ -4,10 +4,6 @@
 #include <assert.h>
 #include <string.h>
 
-#define CHECK_TYPE(var) _Generic((var), \
-    int: INT, \
-    char*: STR, \
-    default: -1)
 
 #define UNEMPLEMENTED \
 	do {	\
@@ -36,42 +32,58 @@ typedef struct
 	Enteries *buckets;
 }HashTable;
 
-unsigned int hash_INT(int key, int size)
-{
-	UNEMPLEMENTED;
-}
-unsigned int hashString(char *key, int size)
-{
-	UNEMPLEMENTED;
 
-}
 void resize()
 {
 	UNEMPLEMENTED;
 }
+
+unsigned int hash_INT (int key, int size)
+{
+	return key%size;
+}
+
+unsigned int hash_STRING(char *key, int size)
+{
+	unsigned long hash = 0;
+	while(*key)
+	{
+		hash = (hash + *key) %size;
+		key ++;
+	}
+	return (unsigned int) hash;
+}
+
 HashTable *create (int size)
 {
+	/*
+	This function takes a size and returns an empty hashtable
+	*/
 	HashTable *ptr = (HashTable*) malloc(size * sizeof(HashTable));
+
 	assert(ptr != NULL);
 
 
 	ptr->size = size;
 	ptr->buckets = (Enteries*) malloc(size * sizeof(Enteries));
-	assert(ptr->buckets != NULL);
 
+	assert(ptr->buckets != NULL);
+	printf("Hash Table created.\n");
 	return ptr;
 }
-void insert(HashTable *table, void *key, void *value)
+
+
+
+void insert(HashTable *table, void *key, void *value, KeyType keyType)
 {
-	KeyType keyType = CHECK_TYPE(*(int*)key);
-	int index;
-	
+	unsigned int index;
 	if (keyType == INT) {
-		index = *(int *)key;
-	} 
-	
-	else if (keyType == STR) {
-		index = strlen((char*)key);
+		index = hash_INT(*(int*)key, table->size);
+	} else if (keyType == STR) {
+		index = hash_STRING((char*)key, table->size);
+	}else {
+		fprintf(stderr, "Unknown key type.\n");
+		return;
 	}
 	Enteries entry;
 	entry.type = keyType;
@@ -79,6 +91,7 @@ void insert(HashTable *table, void *key, void *value)
 	entry.value = value;
 
 	table->buckets[index] = entry;
+	printf("Inserted\n");
 }
 
 void search()
@@ -119,19 +132,19 @@ void printTable(HashTable *table)
 
 int main()
 {
-	printf("Program started");
 	int size = 10;
 	HashTable *hashtable = create(size);
 	
 	int intKey = 2;
 	char *strKey = "hello";
 	char *value = "world";
+	insert(hashtable, &intKey, value, INT);
+	insert(hashtable, strKey, value, STR);
 	
-	insert(hashtable, &intKey, value);
-	insert(hashtable, strKey, value);
+	//printTable(hashtable);
+	//free_table(hashtable);
 	
-	printTable(hashtable);
-	free_table(hashtable);
-	
+
+	printf("Program ended");
 	return 0;
 }

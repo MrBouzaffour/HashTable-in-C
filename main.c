@@ -40,8 +40,8 @@ void resize()
 
 unsigned int hash_INT (int key, int size)
 {
-	return key % size;
-}
+	const double A = 0.6180339887; // fractional part of the golden ratio
+    return (int)(size * (key * A - (int)(key * A)));}
 
 unsigned int hash_STRING(char *key, int size)
 {
@@ -67,7 +67,6 @@ HashTable *create (int size)
 	ptr->size = size;
 	ptr->buckets = (Enteries*) calloc(size, sizeof(Enteries));	
 	assert(ptr->buckets != NULL);
-	printf("Hash Table created.\n");
 	return ptr;
 }
 
@@ -75,21 +74,28 @@ HashTable *create (int size)
 
 void insert(HashTable *table, void *key, void *value, KeyType keyType)
 {
+
+	void *newkey = key;
 	unsigned int index;
 	if (keyType == INT) {
-		index = hash_INT(*(int*)key, table->size);
+		index = hash_INT(*(int*)newkey, table->size);
+		printf("Int inserted to index : %d\n",index);
 	} else if (keyType == STR) {
-		index = hash_STRING((char*)key, table->size);
+		index = hash_STRING((char*)newkey, table->size);
+		printf("Str inserted to index : %d\n",index);
+
 	}else {
 		fprintf(stderr, "Unknown key type.\n");
 		return;
 	}
+
 	Enteries entry;
 	entry.type = keyType;
+	//entry.key = strdup((char*)key);
+	entry.key = key;
 	entry.value = value;
 
 	table->buckets[index] = entry;
-	printf("Inserted\n");
 }
 
 void search(HashTable *table, void *key, KeyType keyType) {
@@ -97,6 +103,7 @@ void search(HashTable *table, void *key, KeyType keyType) {
 
     if (keyType == INT) {
         index = hash_INT(*(int*)key, table->size);
+
     } else if (keyType == STR) {
         index = hash_STRING((char*)key, table->size);
     } else {
@@ -150,24 +157,34 @@ void printTable(HashTable *table)
 
 
 int main() {
+	printf ("\nCreating hash Table in progress ... \n");
     int size = 10;
     HashTable *hashtable = create(size);
+	printf("HashTable created with size = %d\n\n",size);
 
     int intKey = 2;
     char *strKey = "hello";
     char *value = "world";
 
 
-	printf("Insertion ...\n");
-    insert(hashtable, &intKey, value, INT);
+	printf("Testing Insertion : \n\n");
     insert(hashtable, strKey, value, STR);
-	printTable(hashtable);
-	printf("Searching ...\n");
+    insert(hashtable, &intKey, value, INT);
 
+	printf("\nTesting PtrintTable : \n\n");
+	printTable(hashtable);
+
+
+	printf("\nTesting Searching : \n\n");
     search(hashtable, &intKey, INT);  // Search with integer key
     search(hashtable, strKey, STR);   // Search with string key
 
     free_table(hashtable);
 
+	printf("\nTesting FreeTable : \n\n");
+	printTable(hashtable);
+
+
+	printf("\nEnd of Testing.\n");
     return 0;
 }

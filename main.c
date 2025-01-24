@@ -13,11 +13,26 @@
 	}while(0)
 
 
-typedef enum
+typedef struct 
 {
-	INT,
-	STR
-} KeyType;
+	int value;
+}INT;
+typedef struct 
+{
+	char *value;
+}STR;
+typedef union 
+{
+	INT integer;
+	STR string;
+}Container;
+
+typedef struct 
+{
+	Container container;
+	void (*hash) (Container *container, void value)
+};
+
 
 typedef struct
 {

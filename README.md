@@ -1,1 +1,1 @@
-# HashTable-in-C
+# HashTable
